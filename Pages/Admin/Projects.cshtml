@@ -1,0 +1,125 @@
+@page
+@model MyPortfolio.Pages.Admin.ProjectsModel
+@{
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Projects";
+    ViewData["ActivePage"] = "Projects";
+}
+
+<div class="admin-topbar">
+    <div>
+        <h2>Projects</h2>
+        <p class="muted">@Model.Projects.Count projects total</p>
+    </div>
+    <button class="btn btn-primary" onclick="showForm()">
+        <i class='bx bx-plus'></i> Add Project
+    </button>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<!-- Add/Edit Form (hidden by default) -->
+<div id="projectForm" class="card" style="display:none;margin-bottom:1.5rem;">
+    <h3 style="margin-bottom:1.5rem;">Add New Project</h3>
+    <form method="post" asp-page-handler="Add">
+        @Html.AntiForgeryToken()
+        <div class="form-row">
+            <div class="form-group">
+                <label>Project Title</label>
+                <input type="text" name="Title" placeholder="My Awesome Project" required />
+            </div>
+            <div class="form-group">
+                <label>Technologies (comma-separated)</label>
+                <input type="text" name="Technologies" placeholder="React, Node.js, MongoDB" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="Description" rows="3" placeholder="Describe your project..."></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>GitHub URL</label>
+                <input type="url" name="GithubUrl" placeholder="https://github.com/..." />
+            </div>
+            <div class="form-group">
+                <label>Live URL</label>
+                <input type="url" name="LiveUrl" placeholder="https://example.com" />
+            </div>
+        </div>
+        <div class="form-group" style="display:flex;align-items:center;gap:.75rem;">
+            <label style="display:flex;align-items:center;gap:.5rem;text-transform:none;cursor:pointer;">
+                <input type="checkbox" name="IsFeatured" style="width:auto;" /> Featured project
+            </label>
+        </div>
+        <div style="display:flex;gap:.75rem;">
+            <button type="submit" class="btn btn-primary"><i class='bx bx-save'></i> Save Project</button>
+            <button type="button" class="btn btn-ghost" onclick="hideForm()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<!-- Projects Table -->
+<div class="card">
+    <div class="data-table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Technologies</th>
+                    <th>Featured</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model.Projects)
+                {
+                    <tr>
+                        <td>
+                            <strong>@p.Title</strong>
+                            <br/><span class="muted" style="font-size:.8rem;">@p.Description.Substring(0, Math.Min(60, p.Description.Length))...</span>
+                        </td>
+                        <td>
+                            @foreach (var tech in p.Technologies.Split(',').Take(3))
+                            {
+                                <span class="tag tag-blue" style="margin:.1rem;">@tech.Trim()</span>
+                            }
+                        </td>
+                        <td>
+                            @if (p.IsFeatured)
+                            {
+                                <span class="tag tag-green">Yes</span>
+                            }
+                            else
+                            {
+                                <span class="muted">No</span>
+                            }
+                        </td>
+                        <td class="muted">@p.CreatedAt.ToString("MMM yyyy")</td>
+                        <td>
+                            <form method="post" asp-page-handler="Delete" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@p.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Delete this project?')">
+                                    <i class='bx bx-trash'></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+function showForm() { document.getElementById('projectForm').style.display = 'block'; }
+function hideForm() { document.getElementById('projectForm').style.display = 'none'; }
+</script>
+}

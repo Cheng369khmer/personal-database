@@ -1,0 +1,120 @@
+@page
+@model MyPortfolio.Pages.Admin.IndexModel
+@{
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Dashboard";
+    ViewData["ActivePage"] = "Dashboard";
+}
+
+<div class="admin-topbar">
+    <div>
+        <h2>Dashboard</h2>
+        <p class="muted">Welcome back, @User.Identity?.Name</p>
+    </div>
+    <div style="display:flex;gap:.75rem;">
+        <a href="/" target="_blank" class="btn btn-ghost btn-sm">
+            <i class='bx bx-link-external'></i> View Portfolio
+        </a>
+    </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon cyan"><i class='bx bx-code-alt' style="color:var(--neon)"></i></div>
+        <div>
+            <div class="stat-card-num neon">@Model.ProjectCount</div>
+            <div class="stat-card-lbl">Projects</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon blue"><i class='bx bx-star' style="color:var(--blue)"></i></div>
+        <div>
+            <div class="stat-card-num" style="color:var(--blue)">@Model.SkillCount</div>
+            <div class="stat-card-lbl">Skills</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green"><i class='bx bx-envelope' style="color:var(--green)"></i></div>
+        <div>
+            <div class="stat-card-num" style="color:var(--green)">@Model.MessageCount</div>
+            <div class="stat-card-lbl">Messages</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon purple"><i class='bx bx-group' style="color:var(--purple)"></i></div>
+        <div>
+            <div class="stat-card-num" style="color:var(--purple)">@Model.UserCount</div>
+            <div class="stat-card-lbl">Users</div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Messages -->
+<div class="card" style="margin-bottom:1.5rem;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <h3>Recent Messages</h3>
+        <a href="/Admin/Messages" class="btn btn-ghost btn-sm">View All</a>
+    </div>
+    @if (!Model.RecentMessages.Any())
+    {
+        <p class="muted">No messages yet.</p>
+    }
+    else
+    {
+        <div class="data-table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>From</th>
+                        <th>Subject</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var msg in Model.RecentMessages)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@msg.SenderName</strong><br/>
+                                <span class="muted" style="font-size:.8rem;">@msg.SenderEmail</span>
+                            </td>
+                            <td>@msg.Subject</td>
+                            <td class="muted">@msg.SentAt.ToString("MMM dd, yyyy")</td>
+                            <td>
+                                @if (msg.IsRead)
+                                {
+                                    <span class="tag tag-green">Read</span>
+                                }
+                                else
+                                {
+                                    <span class="tag tag-neon">New</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<!-- Quick Actions -->
+<div class="grid-3">
+    <a href="/Admin/Projects" class="card" style="text-decoration:none;cursor:pointer;">
+        <div style="font-size:2rem;margin-bottom:.75rem;">💻</div>
+        <h3>Manage Projects</h3>
+        <p class="muted" style="font-size:.85rem;margin-top:.5rem;">Add, edit, delete portfolio projects</p>
+    </a>
+    <a href="/Admin/Skills" class="card" style="text-decoration:none;cursor:pointer;">
+        <div style="font-size:2rem;margin-bottom:.75rem;">⭐</div>
+        <h3>Manage Skills</h3>
+        <p class="muted" style="font-size:.85rem;margin-top:.5rem;">Update your skill set and proficiency</p>
+    </a>
+    <a href="/Admin/Profile" class="card" style="text-decoration:none;cursor:pointer;">
+        <div style="font-size:2rem;margin-bottom:.75rem;">👤</div>
+        <h3>Edit Profile</h3>
+        <p class="muted" style="font-size:.85rem;margin-top:.5rem;">Update personal info and bio</p>
+    </a>
+</div>

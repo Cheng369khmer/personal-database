@@ -1,0 +1,79 @@
+@page
+@model MyPortfolio.Pages.Admin.UsersModel
+@{
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Users";
+    ViewData["ActivePage"] = "Users";
+}
+
+<div class="admin-topbar">
+    <div>
+        <h2>Users</h2>
+        <p class="muted">@Model.Users.Count registered users</p>
+    </div>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div class="card">
+    <div class="data-table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Joined</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var u in Model.Users)
+                {
+                    <tr>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:.75rem;">
+                                <div style="width:36px;height:36px;border-radius:50%;background:var(--neon-dim);border:1px solid rgba(0,229,255,.3);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--neon);">
+                                    @u.User.FullName.FirstOrDefault()
+                                </div>
+                                <strong>@u.User.FullName</strong>
+                            </div>
+                        </td>
+                        <td>@u.User.Email</td>
+                        <td>
+                            @if (u.Role == "Admin")
+                            {
+                                <span class="tag tag-neon">Admin</span>
+                            }
+                            else
+                            {
+                                <span class="tag tag-purple">User</span>
+                            }
+                        </td>
+                        <td class="muted">@u.User.CreatedAt.ToString("MMM dd, yyyy")</td>
+                        <td>
+                            @if (u.User.Email != User.Identity?.Name)
+                            {
+                                <form method="post" asp-page-handler="Delete">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@u.User.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Delete this user?')">
+                                        <i class='bx bx-trash'></i> Delete
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="muted" style="font-size:.8rem;">Current user</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

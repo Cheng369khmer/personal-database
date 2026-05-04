@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] – Admin Panel</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+
+<div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-logo">
+            <a href="/" class="nav-logo">abu<span>.said</span></a>
+            <div class="muted" style="margin-top:.4rem;font-size:.75rem;">Admin Panel</div>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li><a href="/Admin" class="@(ViewData["ActivePage"]?.ToString() == "Dashboard" ? "active" : "")">
+                <i class='bx bx-grid-alt'></i> Dashboard
+            </a></li>
+            <li><a href="/Admin/Profile" class="@(ViewData["ActivePage"]?.ToString() == "Profile" ? "active" : "")">
+                <i class='bx bx-user'></i> My Profile
+            </a></li>
+            <li><a href="/Admin/Projects" class="@(ViewData["ActivePage"]?.ToString() == "Projects" ? "active" : "")">
+                <i class='bx bx-code-alt'></i> Projects
+            </a></li>
+            <li><a href="/Admin/Skills" class="@(ViewData["ActivePage"]?.ToString() == "Skills" ? "active" : "")">
+                <i class='bx bx-star'></i> Skills
+            </a></li>
+            <li><a href="/Admin/Messages" class="@(ViewData["ActivePage"]?.ToString() == "Messages" ? "active" : "")">
+                <i class='bx bx-envelope'></i> Messages
+            </a></li>
+            <li><a href="/Admin/Users" class="@(ViewData["ActivePage"]?.ToString() == "Users" ? "active" : "")">
+                <i class='bx bx-group'></i> Users
+            </a></li>
+            <li style="margin-top:2rem; border-top:1px solid var(--border); padding-top:1rem;">
+                <form method="post" action="/Account/Logout">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" style="background:none;border:none;width:100%;cursor:pointer;">
+                        <a style="color:var(--text-muted)"><i class='bx bx-log-out'></i> Logout</a>
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main content -->
+    <main class="admin-main">
+        @RenderBody()
+    </main>
+</div>
+
+<script src="~/js/site.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

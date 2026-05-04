@@ -1,0 +1,243 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Portfolio";
+}
+
+<!-- ═══════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════ -->
+<section class="hero-section" id="about">
+    <div class="hero-bg"></div>
+    <div class="container">
+        <div class="hero-grid">
+            <!-- Left: Text -->
+            <div>
+                <div class="hero-eyebrow">Available for freelance work</div>
+
+                <h1 class="hero-name">
+                    Hello, I'm
+                    <span class="neon-underline">@Model.Profile.Name</span>
+                </h1>
+
+                <p class="hero-title">// @Model.Profile.Title · @Model.Profile.Company</p>
+
+                <p class="hero-bio">@Model.Profile.Bio</p>
+
+                <div class="hero-actions">
+                    <a href="/#projects" class="btn btn-primary">
+                        <i class='bx bx-code-alt'></i> View Projects
+                    </a>
+                    <a href="/#contact" class="btn btn-outline">
+                        <i class='bx bx-envelope'></i> Contact Me
+                    </a>
+                    @if (!string.IsNullOrEmpty(Model.Profile.GithubUrl))
+                    {
+                        <a href="@Model.Profile.GithubUrl" target="_blank" class="btn btn-ghost">
+                            <i class='bx bxl-github'></i> GitHub
+                        </a>
+                    }
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-num">@Model.Profile.Repositories</span>
+                        <span class="stat-lbl">Repositories</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">@Model.Skills.Count</span>
+                        <span class="stat-lbl">Skills</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">@Model.Projects.Count</span>
+                        <span class="stat-lbl">Projects</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Avatar -->
+            <div class="hero-visual">
+                <div class="avatar-wrap">
+                    <div class="avatar-ring"></div>
+                    <div class="avatar-placeholder">👨‍💻</div>
+                    @if (Model.Profile.Hireable)
+                    {
+                        <span class="hireable-badge">Open to Work</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SKILLS
+═══════════════════════════════════════════════════ -->
+<section class="section" id="skills">
+    <div class="container">
+        <div class="section-title">
+            <h2><span>02.</span> Skills &amp; Technologies</h2>
+        </div>
+
+        <div class="grid-2">
+            @foreach (var cat in Model.Skills.GroupBy(s => s.Category))
+            {
+                <div class="card">
+                    <h3 style="margin-bottom:1.5rem;color:var(--neon);">@cat.Key</h3>
+                    @foreach (var skill in cat)
+                    {
+                        <div class="skill-bar-wrap">
+                            <div class="skill-label">
+                                <span>@skill.Name</span>
+                                <span class="muted">@skill.Proficiency%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width:@skill.Proficiency%"></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- Skill tags -->
+        <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:.6rem;">
+            @foreach (var skill in Model.Skills)
+            {
+                <span class="tag tag-neon">@skill.Name</span>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     PROJECTS
+═══════════════════════════════════════════════════ -->
+<section class="section" id="projects">
+    <div class="container">
+        <div class="section-title">
+            <h2><span>03.</span> Projects</h2>
+        </div>
+
+        <div class="grid-3">
+            @foreach (var project in Model.Projects)
+            {
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon">💻</div>
+                        <div>
+                            <h3>@project.Title</h3>
+                            @if (project.IsFeatured)
+                            {
+                                <span class="tag tag-green" style="font-size:.7rem;">Featured</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="project-body">
+                        <p>@project.Description</p>
+                        <div class="project-tech">
+                            @foreach (var tech in project.Technologies.Split(','))
+                            {
+                                <span class="tag tag-blue">@tech.Trim()</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="project-footer">
+                        @if (!string.IsNullOrEmpty(project.GithubUrl))
+                        {
+                            <a href="@project.GithubUrl" target="_blank" class="btn btn-ghost btn-sm">
+                                <i class='bx bxl-github'></i> Code
+                            </a>
+                        }
+                        @if (!string.IsNullOrEmpty(project.LiveUrl))
+                        {
+                            <a href="@project.LiveUrl" target="_blank" class="btn btn-outline btn-sm">
+                                <i class='bx bx-link-external'></i> Live
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     CONTACT
+═══════════════════════════════════════════════════ -->
+<section class="section" id="contact">
+    <div class="container">
+        <div class="section-title">
+            <h2><span>04.</span> Get In Touch</h2>
+        </div>
+
+        <div class="contact-grid">
+            <!-- Contact Info -->
+            <div>
+                <p style="margin-bottom:2rem;">
+                    I'm currently available for freelance work and open to full-time opportunities.
+                    Drop me a message and I'll get back to you as soon as possible!
+                </p>
+
+                <div class="contact-info-item">
+                    <div class="contact-icon"><i class='bx bx-envelope' style="color:var(--neon)"></i></div>
+                    <div>
+                        <div class="muted" style="font-size:.75rem;">EMAIL</div>
+                        <div>@Model.Profile.Email</div>
+                    </div>
+                </div>
+                <div class="contact-info-item">
+                    <div class="contact-icon"><i class='bx bx-map' style="color:var(--neon)"></i></div>
+                    <div>
+                        <div class="muted" style="font-size:.75rem;">LOCATION</div>
+                        <div>@Model.Profile.Location</div>
+                    </div>
+                </div>
+                <div class="contact-info-item">
+                    <div class="contact-icon"><i class='bx bx-phone' style="color:var(--neon)"></i></div>
+                    <div>
+                        <div class="muted" style="font-size:.75rem;">PHONE</div>
+                        <div>@Model.Profile.Phone</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="card">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success"><i class='bx bx-check'></i> @TempData["Success"]</div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-error"><i class='bx bx-error'></i> @TempData["Error"]</div>
+                }
+
+                <form method="post" asp-page-handler="Contact">
+                    @Html.AntiForgeryToken()
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Your Name</label>
+                            <input type="text" name="SenderName" placeholder="John Doe" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" name="SenderEmail" placeholder="john@example.com" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" name="Subject" placeholder="Project inquiry..." required />
+                    </div>
+                    <div class="form-group">
+                        <label>Message</label>
+                        <textarea name="Message" placeholder="Tell me about your project..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%;">
+                        <i class='bx bx-send'></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

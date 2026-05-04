@@ -1,0 +1,93 @@
+@page
+@model MyPortfolio.Pages.Admin.MessagesModel
+@{
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Messages";
+    ViewData["ActivePage"] = "Messages";
+}
+
+<div class="admin-topbar">
+    <div>
+        <h2>Contact Messages</h2>
+        <p class="muted">@Model.Messages.Count(m => !m.IsRead) unread messages</p>
+    </div>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div class="card">
+    @if (!Model.Messages.Any())
+    {
+        <p class="muted">No messages yet.</p>
+    }
+    else
+    {
+        <div class="data-table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>From</th>
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var msg in Model.Messages)
+                    {
+                        <tr style="@(!msg.IsRead ? "background:rgba(0,229,255,.03);" : "")">
+                            <td>
+                                <strong>@msg.SenderName</strong><br/>
+                                <a href="mailto:@msg.SenderEmail" class="muted" style="font-size:.8rem;">
+                                    @msg.SenderEmail
+                                </a>
+                            </td>
+                            <td>@msg.Subject</td>
+                            <td>
+                                <span style="max-width:250px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                                    @msg.Message
+                                </span>
+                            </td>
+                            <td class="muted">@msg.SentAt.ToString("MMM dd, yyyy HH:mm")</td>
+                            <td>
+                                @if (msg.IsRead)
+                                {
+                                    <span class="tag tag-green">Read</span>
+                                }
+                                else
+                                {
+                                    <span class="tag tag-neon">New</span>
+                                }
+                            </td>
+                            <td style="display:flex;gap:.5rem;">
+                                @if (!msg.IsRead)
+                                {
+                                    <form method="post" asp-page-handler="MarkRead">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@msg.Id" />
+                                        <button type="submit" class="btn btn-ghost btn-sm" title="Mark as read">
+                                            <i class='bx bx-check'></i>
+                                        </button>
+                                    </form>
+                                }
+                                <form method="post" asp-page-handler="Delete">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@msg.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Delete this message?')">
+                                        <i class='bx bx-trash'></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

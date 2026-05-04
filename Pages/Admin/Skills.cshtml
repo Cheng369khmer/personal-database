@@ -1,0 +1,98 @@
+@page
+@model MyPortfolio.Pages.Admin.SkillsModel
+@{
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Skills";
+    ViewData["ActivePage"] = "Skills";
+}
+
+<div class="admin-topbar">
+    <div>
+        <h2>Skills</h2>
+        <p class="muted">Manage your skill set</p>
+    </div>
+    <button class="btn btn-primary" onclick="document.getElementById('skillForm').style.display='block'">
+        <i class='bx bx-plus'></i> Add Skill
+    </button>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div id="skillForm" class="card" style="display:none;margin-bottom:1.5rem;">
+    <h3 style="margin-bottom:1.5rem;">Add Skill</h3>
+    <form method="post" asp-page-handler="Add">
+        @Html.AntiForgeryToken()
+        <div class="form-row">
+            <div class="form-group">
+                <label>Skill Name</label>
+                <input type="text" name="Name" placeholder="React, Docker, etc." required />
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select name="Category">
+                    <option>Frontend</option>
+                    <option>Backend</option>
+                    <option>Database</option>
+                    <option>DevOps</option>
+                    <option>Other</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Proficiency: <span id="profVal">80</span>%</label>
+            <input type="range" name="Proficiency" min="10" max="100" value="80"
+                oninput="document.getElementById('profVal').textContent=this.value"
+                style="accent-color:var(--neon);" />
+        </div>
+        <div style="display:flex;gap:.75rem;">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-ghost"
+                onclick="document.getElementById('skillForm').style.display='none'">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <div class="data-table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Skill</th>
+                    <th>Category</th>
+                    <th>Proficiency</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model.Skills)
+                {
+                    <tr>
+                        <td><strong>@s.Name</strong></td>
+                        <td><span class="tag tag-blue">@s.Category</span></td>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:.75rem;">
+                                <div class="skill-bar" style="width:120px;">
+                                    <div class="skill-fill" style="width:@s.Proficiency%"></div>
+                                </div>
+                                <span class="muted">@s.Proficiency%</span>
+                            </div>
+                        </td>
+                        <td>
+                            <form method="post" asp-page-handler="Delete">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@s.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Delete this skill?')">
+                                    <i class='bx bx-trash'></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

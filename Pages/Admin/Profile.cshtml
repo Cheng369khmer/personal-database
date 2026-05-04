@@ -1,0 +1,87 @@
+@page
+@model MyPortfolio.Pages.Admin.ProfileModel
+@{
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Edit Profile";
+    ViewData["ActivePage"] = "Profile";
+}
+
+<div class="admin-topbar">
+    <div>
+        <h2>My Profile</h2>
+        <p class="muted">Update your personal information shown on the portfolio</p>
+    </div>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success"><i class='bx bx-check'></i> @TempData["Success"]</div>
+}
+
+<div class="card">
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Profile.Id" />
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" asp-for="Profile.Name" required />
+            </div>
+            <div class="form-group">
+                <label>Job Title</label>
+                <input type="text" asp-for="Profile.Title" placeholder="Full Stack Developer" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Company</label>
+                <input type="text" asp-for="Profile.Company" />
+            </div>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" asp-for="Profile.Location" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Bio</label>
+            <textarea asp-for="Profile.Bio" rows="4"></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" asp-for="Profile.Email" />
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="text" asp-for="Profile.Phone" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>GitHub URL</label>
+                <input type="url" asp-for="Profile.GithubUrl" />
+            </div>
+            <div class="form-group">
+                <label>LinkedIn URL</label>
+                <input type="url" asp-for="Profile.LinkedInUrl" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Repositories Count</label>
+                <input type="number" asp-for="Profile.Repositories" />
+            </div>
+            <div class="form-group" style="display:flex;align-items:center;gap:1rem;padding-top:1.8rem;">
+                <label style="display:flex;align-items:center;gap:.5rem;text-transform:none;cursor:pointer;">
+                    <input type="checkbox" asp-for="Profile.Hireable" style="width:auto;" />
+                    Available for hire
+                </label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            <i class='bx bx-save'></i> Save Changes
+        </button>
+    </form>
+</div>

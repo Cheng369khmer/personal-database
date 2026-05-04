@@ -1,0 +1,68 @@
+@page
+@model MyPortfolio.Pages.Account.LoginModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Login";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login – CHENG IT</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
+</head>
+<body>
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="auth-logo">
+            <div style="font-size:2.5rem;">👨‍💻</div>
+            <h2>it.shear</h2>
+            <p class="muted" style="font-size:.85rem;">Sign in to your account</p>
+        </div>
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-error">@TempData["Error"]</div>
+        }
+
+        <form method="post">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label><i class='bx bx-envelope'></i> Email Address</label>
+                <input type="email" asp-for="Email" placeholder="admin@myportfolio.com" required />
+                <span asp-validation-for="Email" class="muted" style="color:#ef4444;font-size:.8rem;"></span>
+            </div>
+            <div class="form-group">
+                <label><i class='bx bx-lock'></i> Password</label>
+                <input type="password" asp-for="Password" placeholder="••••••••" required />
+                <span asp-validation-for="Password" class="muted" style="color:#ef4444;font-size:.8rem;"></span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+                <label style="display:flex;align-items:center;gap:.5rem;text-transform:none;font-size:.9rem;cursor:pointer;">
+                    <input type="checkbox" asp-for="RememberMe" style="width:auto;" />
+                    Remember me
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+                <i class='bx bx-log-in'></i> Sign In
+            </button>
+        </form>
+
+        <div style="text-align:center;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);">
+            <p class="muted" style="font-size:.85rem;">
+                Don't have an account? <a href="/Account/Register">Register</a>
+            </p>
+        </div>
+
+       
+
+        <div style="text-align:center;margin-top:1rem;">
+            <a href="/" class="muted" style="font-size:.85rem;">← Back to Portfolio</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
