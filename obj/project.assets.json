@@ -3191,11 +3191,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\CV-CHENG\\MyPortfolio\\MyPortfolio\\MyPortfolio.csproj",
+      "projectUniqueName": "D:\\CV-CHENG\\Assignment ASP.net -PUM Symon\\MyPortfolio\\MyPortfolio\\MyPortfolio.csproj",
       "projectName": "MyPortfolio",
-      "projectPath": "D:\\CV-CHENG\\MyPortfolio\\MyPortfolio\\MyPortfolio.csproj",
+      "projectPath": "D:\\CV-CHENG\\Assignment ASP.net -PUM Symon\\MyPortfolio\\MyPortfolio\\MyPortfolio.csproj",
       "packagesPath": "C:\\Users\\ThangCheng\\.nuget\\packages\\",
-      "outputPath": "D:\\CV-CHENG\\MyPortfolio\\MyPortfolio\\obj\\",
+      "outputPath": "D:\\CV-CHENG\\Assignment ASP.net -PUM Symon\\MyPortfolio\\MyPortfolio\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ThangCheng\\AppData\\Roaming\\NuGet\\NuGet.Config"
