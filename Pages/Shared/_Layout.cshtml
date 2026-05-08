@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,70 +8,75 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700;800&display=swap"
+    rel="stylesheet" />
     <!-- Boxicons for icons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
     @await RenderSectionAsync("Styles", required: false)
 </head>
+
 <body>
 
-<!-- ── Navbar ─────────────────────────────────────── -->
-<nav class="navbar">
-    <div class="nav-inner">
-        <a href="/" class="nav-logo">IT<span>.Shear</span></a>
-        
-        <ul class="nav-links">
-            <li><a href="/#about">About</a></li>
-            <li><a href="/#skills">Skills</a></li>
-            <li><a href="/#projects">Projects</a></li>
-            <li><a href="/#contact">Contact</a></li>
-        </ul>
+    <!-- ── Navbar ─────────────────────────────────────── -->
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">IT<span>.Shear</span></a>
 
-        <div class="nav-auth">
-            @if (User.Identity?.IsAuthenticated == true)
-            {
-                @if (User.IsInRole("Admin"))
+            <ul class="nav-links">
+                <li><a href="/#about">About</a></li>
+                <li><a href="/#skills">Skills</a></li>
+                <li><a href="/#projects">Projects</a></li>
+                <li><a href="/#contact">Contact</a></li>
+                <li><a href="/docs/Cheng_Resume.pdf" target="_blank" class="nav-link">Resume</a></li>
+            </ul>
+
+            <div class="nav-auth">
+                @if (User.Identity?.IsAuthenticated == true)
                 {
-                    <a href="/Admin" class="btn btn-ghost btn-sm">
-                        <i class='bx bx-grid-alt'></i> Admin
-                    </a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a href="/Admin" class="btn btn-ghost btn-sm">
+                            <i class='bx bx-grid-alt'></i> Admin
+                        </a>
+                    }
+                    <form method="post" action="/Account/Logout" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-outline btn-sm">Logout</button>
+                    </form>
                 }
-                <form method="post" action="/Account/Logout" style="display:inline;">
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-outline btn-sm">Logout</button>
-                </form>
-            }
-            else
-            {
-                <a href="/Account/Login" class="btn btn-ghost btn-sm">Login</a>
-                <a href="/Account/Register" class="btn btn-primary btn-sm">Register</a>
-            }
+                else
+                {
+                    <a href="/Account/Login" class="btn btn-ghost btn-sm">Login</a>
+                    <a href="/Account/Register" class="btn btn-primary btn-sm">Register</a>
+                }
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<!-- ── Page Content ───────────────────────────────── -->
-<main style="padding-top: 70px;">
-    @RenderBody()
-</main>
+    <!-- ── Page Content ───────────────────────────────── -->
+    <main style="padding-top: 70px;">
+        @RenderBody()
+    </main>
 
-<!-- ── Footer ────────────────────────────────────── -->
-<footer class="footer">
-    <div class="container">
-        <div class="footer-social">
-            <a href="#" class="social-link" title="GitHub"><i class='bx bxl-github'></i></a>
-            <a href="#" class="social-link" title="LinkedIn"><i class='bx bxl-linkedin'></i></a>
-            <a href="#" class="social-link" title="Twitter"><i class='bx bxl-twitter'></i></a>
-            <a href="mailto:#" class="social-link" title="Email"><i class='bx bx-envelope'></i></a>
+    <!-- ── Footer ────────────────────────────────────── -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-social">
+                <a href="#" class="social-link" title="GitHub"><i class='bx bxl-github'></i></a>
+                <a href="#" class="social-link" title="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+                <a href="#" class="social-link" title="Twitter"><i class='bx bxl-twitter'></i></a>
+                <a href="mailto:#" class="social-link" title="Email"><i class='bx bx-envelope'></i></a>
+            </div>
+            <p class="muted">
+                <span class="mono">©</span> @DateTime.Now.Year
+                <span class="neon">CHENG</span> · Built with ASP.NET Core + MySQL
+            </p>
         </div>
-        <p class="muted">
-            <span class="mono">©</span> @DateTime.Now.Year
-            <span class="neon">CHENG</span> · Built with ASP.NET Core + MySQL
-        </p>
-    </div>
-</footer>
+    </footer>
 
-<script src="~/js/site.js"></script>
-@await RenderSectionAsync("Scripts", required: false)
+    <script src="~/js/site.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
