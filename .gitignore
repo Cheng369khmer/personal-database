@@ -1,0 +1,8 @@
+# លាក់ Folder ដែលកើតឡើងពេល Build កូដ
+[Bb]in/
+[Oo]bj/
+
+# លាក់ឯកសារបណ្ដោះអាសន្នផ្សេងៗរបស់ Visual Studio / VS Code
+.vs/
+*.user
+*.lscache
